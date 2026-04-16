@@ -1,0 +1,6 @@
+/* App.css - minimal resets that tailwind doesn't handle */
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
