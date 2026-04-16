@@ -1,0 +1,46 @@
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+.factorypath
+
+# Node / Frontend
+Frontend/node_modules/
+Frontend/dist/
+Frontend/dist-ssr/
+Frontend/*.local
+Frontend/.env
+Frontend/.env.*
+Frontend/.env.example
+Frontend/npm-debug.log*
+Frontend/yarn-debug.log*
+Frontend/yarn-error.log*
+Frontend/.eslintcache
+
+# Maven / Backend
+Backend/target/
+Backend/pom.xml.tag
+Backend/pom.xml.releaseBackup
+Backend/pom.xml.versionsBackup
+Backend/pom.xml.next
+Backend/release.properties
+Backend/dependency-reduced-pom.xml
+Backend/.mvn/timing.properties
+Backend/.mvn/wrapper/maven-wrapper.jar
+
+# Log files
+Backend/*.log
+Backend/logs/
+
+# Temporary files
+Backend/tmp/
+Backend/*.tmp
+Backend/*.temp

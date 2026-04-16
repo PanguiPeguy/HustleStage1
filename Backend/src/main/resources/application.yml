@@ -1,0 +1,50 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/facturation}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:22p3?9}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+  mail:
+    # Configuration SMTP Gmail
+    host: smtp.gmail.com
+    port: 587
+    username: panguipeguy678@gmail.com
+    password: xgmq tgeo ykhx uojd
+    protocol: smtp
+    default-encoding: UTF-8
+
+    # Propriétés SMTP
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          starttls.required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+          ssl.trust: smtp.gmail.com
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+server:
+  port: ${PORT:8080}
+
+application:
+  jwt:
+    secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+    expiration: 86400000 # 24 heures en ms
+  frontend-url: ${FRONTEND_URL:http://localhost:5173}
+  upload-dir: ${UPLOAD_DIR:./uploads}
