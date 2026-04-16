@@ -2,7 +2,7 @@ spring:
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/facturation}
     username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:22p3?9}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -13,12 +13,12 @@ spring:
         format_sql: true
   mail:
     # Configuration SMTP Gmail
-    host: smtp.gmail.com
-    port: 587
-    username: panguipeguy678@gmail.com
-    password: xgmq tgeo ykhx uojd
-    protocol: smtp
-    default-encoding: UTF-8
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT}
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
+    protocol: ${SMTP_PROTOCOL}
+    default-encoding: ${SMTP_ENCODING}
 
     # Propriétés SMTP
     properties:

@@ -35,6 +35,7 @@ Backend/release.properties
 Backend/dependency-reduced-pom.xml
 Backend/.mvn/timing.properties
 Backend/.mvn/wrapper/maven-wrapper.jar
+Backend/.env
 
 # Log files
 Backend/*.log
