@@ -244,7 +244,10 @@ const DashboardPage: React.FC = () => {
                     stroke="none"
                   >
                     {pieData.map((_, index) => (
-                      <Cell key={index} fill={PIE_COLORS[index % PIE_COLORS.length]} cornerRadius={3} />
+                      <Cell
+                      key={index}
+                      fill={PIE_COLORS[index % PIE_COLORS.length]}
+                    />
                     ))}
                   </Pie>
                   <Tooltip contentStyle={tooltipStyle} />

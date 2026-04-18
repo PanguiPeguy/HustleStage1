@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Plus, Search, Edit2, Trash2, Mail, Phone, Hash, Users, MoreHorizontal } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, Mail, Phone, Hash, Users } from 'lucide-react';
 import { clientService } from '../services/clientService';
 import { useSettings } from '../context/SettingsContext';
 import type { Client } from '../types';
