@@ -46,5 +46,5 @@ application:
   jwt:
     secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
     expiration: 86400000 # 24 heures en ms
-  frontend-url: ${FRONTEND_URL:http://localhost:5173}
+  frontend-url: ${FRONTEND_URL:https://invoice-pro-henna.vercel.app}
   upload-dir: ${UPLOAD_DIR:./uploads}

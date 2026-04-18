@@ -65,7 +65,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOriginPatterns(List.of(frontendUrl, "http://localhost:5173", "http://localhost:3000", "https://*.vercel.app"));
+        config.setAllowedOriginPatterns(List.of(frontendUrl, "http://localhost:5173", "http://localhost:3000", "https://invoice-pro-henna.vercel.app"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
