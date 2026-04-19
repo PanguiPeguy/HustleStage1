@@ -38,14 +38,31 @@ public class FactureService {
 
     public List<FactureResponse> getAllFactures() {
         Utilisateur user = getCurrentUser();
-        return factureRepository.findAllByUserIdOrdered(user.getId())
-                .stream().map(this::toResponse).collect(Collectors.toList());
+        List<Facture> factures = factureRepository.findAllByUserIdOrdered(user.getId());
+        
+        LocalDate now = LocalDate.now();
+        boolean changed = false;
+        for (Facture f : factures) {
+            if (f.getStatut() == StatutFacture.ENVOYEE && f.getEcheance().isBefore(now)) {
+                f.setStatut(StatutFacture.EN_RETARD);
+                factureRepository.save(f);
+                changed = true;
+            }
+        }
+        
+        return factures.stream().map(this::toResponse).collect(Collectors.toList());
     }
 
     public FactureResponse getFactureById(Long id) {
         Utilisateur user = getCurrentUser();
         Facture facture = factureRepository.findByIdAndUtilisateurId(id, user.getId())
                 .orElseThrow(() -> new RuntimeException("Facture non trouvée"));
+        
+        if (facture.getStatut() == StatutFacture.ENVOYEE && facture.getEcheance().isBefore(LocalDate.now())) {
+            facture.setStatut(StatutFacture.EN_RETARD);
+            factureRepository.save(facture);
+        }
+        
         return toResponse(facture);
     }
 

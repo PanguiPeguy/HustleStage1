@@ -3,11 +3,13 @@ import { useForm } from 'react-hook-form';
 import {
   Save, Building, MapPin, CreditCard,
   Mail, Loader2, Phone, Hash, ShieldCheck,
+  AlertTriangle, Trash2,
 } from 'lucide-react';
 import { userService } from '../services/dashboardService';
 import { useAuthStore } from '../store/authStore';
 import { useSettings }  from '../context/SettingsContext';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 interface ProfileForm {
   nomEntreprise: string;
@@ -18,10 +20,12 @@ interface ProfileForm {
 }
 
 const ProfilePage: React.FC = () => {
-  const { user, updateUser } = useAuthStore();
+  const { user, updateUser, logout } = useAuthStore();
   const [loading, setLoading] = useState(true);
   const [saving,  setSaving]  = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const { t } = useSettings();
+  const navigate = useNavigate();
 
   const { register, handleSubmit, reset } = useForm<ProfileForm>();
 
@@ -50,6 +54,23 @@ const ProfilePage: React.FC = () => {
       toast.error(t.common.error);
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (!window.confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible et toutes vos données (factures, clients, etc.) seront définitivement supprimées.')) {
+      return;
+    }
+
+    setDeleting(true);
+    try {
+      await userService.deleteProfile();
+      toast.success('Compte supprimé avec succès');
+      logout();
+      navigate('/');
+    } catch {
+      toast.error('Une erreur est survenue lors de la suppression du compte');
+      setDeleting(false);
     }
   };
 
@@ -182,6 +203,35 @@ const ProfilePage: React.FC = () => {
             <p style={{ fontSize: 12.5, color: 'var(--text-3)', lineHeight: 1.7 }}>
               The information entered here will appear on your future PDF documents and emails sent to your customers.
             </p>
+          </div>
+
+          <div
+            style={{
+              ...cardStyle,
+              padding: '24px',
+              background: 'rgba(244, 63, 94, 0.05)',
+              borderColor: 'var(--danger)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 12,
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--danger)', fontWeight: 700, fontSize: 14 }}>
+              <AlertTriangle size={16} />
+              Zone de danger
+            </div>
+            <p style={{ fontSize: 12.5, color: 'var(--danger)', opacity: 0.8, lineHeight: 1.5 }}>
+              Supprimer définitivement votre compte et toutes ses données.
+            </p>
+            <button
+              onClick={handleDeleteAccount}
+              disabled={deleting}
+              className="btn btn-danger btn-sm"
+              style={{ width: '100%', justifyContent: 'center', marginTop: 8 }}
+            >
+              {deleting ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={14} />}
+              Supprimer mon compte
+            </button>
           </div>
         </div>
 

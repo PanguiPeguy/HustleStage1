@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,6 +33,14 @@ public class DashboardService {
     public DashboardStats getStats() {
         Utilisateur user = getCurrentUser();
         List<Facture> allFactures = factureRepository.findAllByUserIdOrdered(user.getId());
+
+        LocalDate now = LocalDate.now();
+        allFactures.forEach(f -> {
+            if (f.getStatut() == StatutFacture.ENVOYEE && f.getEcheance().isBefore(now)) {
+                f.setStatut(StatutFacture.EN_RETARD);
+                factureRepository.save(f);
+            }
+        });
 
         BigDecimal caTotal = allFactures.stream()
                 .map(Facture::getTotalTTC)

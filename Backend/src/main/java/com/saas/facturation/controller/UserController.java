@@ -26,26 +26,37 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> getProfile() {
         Utilisateur user = getCurrentUser();
         return ResponseEntity.ok(Map.of(
-            "id", user.getId(),
-            "email", user.getEmail(),
-            "nomEntreprise", user.getNomEntreprise() != null ? user.getNomEntreprise() : "",
-            "telephone", user.getTelephone() != null ? user.getTelephone() : "",
-            "adresse", user.getAdresse() != null ? user.getAdresse() : "",
-            "siret", user.getSiret() != null ? user.getSiret() : "",
-            "rib", user.getRib() != null ? user.getRib() : ""
-        ));
+                "id", user.getId(),
+                "email", user.getEmail(),
+                "nomEntreprise", user.getNomEntreprise() != null ? user.getNomEntreprise() : "",
+                "telephone", user.getTelephone() != null ? user.getTelephone() : "",
+                "adresse", user.getAdresse() != null ? user.getAdresse() : "",
+                "siret", user.getSiret() != null ? user.getSiret() : "",
+                "rib", user.getRib() != null ? user.getRib() : ""));
     }
 
     @PutMapping("/profile")
     public ResponseEntity<Map<String, Object>> updateProfile(@RequestBody ProfileUpdateRequest request) {
         Utilisateur user = getCurrentUser();
-        if (request.getNomEntreprise() != null) user.setNomEntreprise(request.getNomEntreprise());
-        if (request.getTelephone() != null) user.setTelephone(request.getTelephone());
-        if (request.getAdresse() != null) user.setAdresse(request.getAdresse());
-        if (request.getSiret() != null) user.setSiret(request.getSiret());
-        if (request.getRib() != null) user.setRib(request.getRib());
+        if (request.getNomEntreprise() != null)
+            user.setNomEntreprise(request.getNomEntreprise());
+        if (request.getTelephone() != null)
+            user.setTelephone(request.getTelephone());
+        if (request.getAdresse() != null)
+            user.setAdresse(request.getAdresse());
+        if (request.getSiret() != null)
+            user.setSiret(request.getSiret());
+        if (request.getRib() != null)
+            user.setRib(request.getRib());
         utilisateurRepository.save(user);
         return getProfile();
+    }
+
+    @DeleteMapping("/profile")
+    public ResponseEntity<Void> deleteProfile() {
+        Utilisateur user = getCurrentUser();
+        utilisateurRepository.delete(user);
+        return ResponseEntity.noContent().build();
     }
 
     @Data

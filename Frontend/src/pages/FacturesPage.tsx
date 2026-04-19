@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Plus, Search, FileText, Download, Mail, CheckCircle, Copy, Trash2 } from 'lucide-react';
+import { Plus, Search, FileText, Download, Mail, CheckCircle, Copy, Trash2, Edit } from 'lucide-react';
 import { invoiceService } from '../services/invoiceService';
 import { useSettings } from '../context/SettingsContext';
 import type { Facture } from '../types';
@@ -167,6 +167,16 @@ const FacturesPage: React.FC = () => {
                   </td>
                   <td>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 4 }}>
+                      {f.statut === 'BROUILLON' && (
+                        <Link
+                          to={`/factures/edit/${f.id}`}
+                          className="icon-btn"
+                          title="Modifier"
+                          style={{ color: 'var(--accent)' }}
+                        >
+                          <Edit size={15} />
+                        </Link>
+                      )}
                       {f.statut !== 'PAYEE' && f.statut !== 'BROUILLON' && (
                         <button
                           className="icon-btn"

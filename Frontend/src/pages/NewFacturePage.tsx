@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -52,9 +52,10 @@ const NewFacturePage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { t, lang } = useSettings();
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
 
   const {
-    register, control, handleSubmit, watch,
+    register, control, handleSubmit, watch, reset,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -71,7 +72,25 @@ const NewFacturePage: React.FC = () => {
 
   useEffect(() => {
     clientService.getAll().then(setClients).catch(() => toast.error(t.common.error));
-  }, [t.common.error]);
+    
+    if (id) {
+      invoiceService.getById(Number(id)).then(f => {
+        reset({
+          clientId: f.client.id.toString(),
+          date: f.date,
+          echeance: f.echeance,
+          statut: f.statut,
+          note: f.note,
+          lignes: f.lignes.map(l => ({
+            description: l.description,
+            quantite: l.quantite,
+            prixHT: l.prixHT,
+            tva: l.tva
+          }))
+        });
+      }).catch(() => toast.error("Erreur lors du chargement de la facture"));
+    }
+  }, [t.common.error, id, reset]);
 
   const calcTotals = () =>
     watchLignes.reduce(
@@ -91,8 +110,13 @@ const NewFacturePage: React.FC = () => {
   const onSubmit = async (data: FormValues) => {
     setLoading(true);
     try {
-      await invoiceService.create({ ...data, clientId: Number(data.clientId) });
-      toast.success(t.newInvoice.created);
+      if (id) {
+        await invoiceService.update(Number(id), { ...data, clientId: Number(data.clientId) });
+        toast.success("Facture mise à jour");
+      } else {
+        await invoiceService.create({ ...data, clientId: Number(data.clientId) });
+        toast.success(t.newInvoice.created);
+      }
       navigate('/factures');
     } catch (err: any) {
       toast.error(err.response?.data?.message || t.common.error);
@@ -127,7 +151,9 @@ const NewFacturePage: React.FC = () => {
           <ArrowLeft size={16} />
         </button>
         <div>
-          <h1 className="page-title" style={{ marginBottom: 2 }}>{t.newInvoice.title}</h1>
+          <h1 className="page-title" style={{ marginBottom: 2 }}>
+            {id ? 'Modifier la facture' : t.newInvoice.title}
+          </h1>
           <nav
             style={{
               display: 'flex',
@@ -140,7 +166,9 @@ const NewFacturePage: React.FC = () => {
           >
             <span>{t.nav.invoices}</span>
             <ChevronRight size={12} />
-            <span style={{ color: 'var(--accent)' }}>{t.newInvoice.title}</span>
+            <span style={{ color: 'var(--accent)' }}>
+              {id ? 'Modification' : t.newInvoice.title}
+            </span>
           </nav>
         </div>
       </div>

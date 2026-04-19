@@ -18,4 +18,8 @@ export const userService = {
     const { data } = await api.put('/users/profile', profile);
     return data;
   },
+
+  async deleteProfile() {
+    await api.delete('/users/profile');
+  },
 };

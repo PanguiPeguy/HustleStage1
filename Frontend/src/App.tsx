@@ -58,7 +58,8 @@ const App: React.FC = () => (
           <Route path="/dashboard"     element={<AppLayout><DashboardPage /></AppLayout>} />
           <Route path="/clients"       element={<AppLayout><ClientsPage /></AppLayout>} />
           <Route path="/factures"      element={<AppLayout><FacturesPage /></AppLayout>} />
-          <Route path="/newfactures"  element={<AppLayout><NewFacturePage /></AppLayout>} />
+          <Route path="/newfactures"   element={<AppLayout><NewFacturePage /></AppLayout>} />
+          <Route path="/factures/edit/:id" element={<AppLayout><NewFacturePage /></AppLayout>} />
           <Route path="/profile"       element={<AppLayout><ProfilePage /></AppLayout>} />
         </Route>
 
